@@ -23,18 +23,35 @@ let p = [
     vasoCafetero = new Producto("Vaso Cafe", "Vaso para cafe", 120.00, 100),
     cajaRegalo = new Producto("Caja Regalo", "Caja con tapa personalizada", 250.00, 150)
 ];
-let opcion;
-let termino;
 
 function Comprar(){
+    let opcion;
+    let cantidad;
+    let monto = 0;
 
+    opcion = parseInt(prompt(`Que producto desea comprar?\n\n${consulta()}`)) - 1;
+
+    do {    
+        if (opcion >= 0 && opcion < p.length){
+            cantidad = parseInt(prompt("Introduzca una cantidad: "));
+            p[opcion].comprados(cantidad);
+            monto += (p[opcion].precio * cantidad);
+        }
+        else{
+            opcion = parseInt(prompt(`Ingrese un producto existente\n\n${consulta()}`));
+            continue;
+        }
+
+    } while (0);
 }
 
 const consulta = () => {
     let txt = "";
-            
+    let i = 0;
+
     p.forEach(prod => {
-        txt += `Nombre: ${prod.nom}\nPrecio: ${prod.precio}\nStock: ${prod.stock}\n\n`;
+        i++;
+        txt += `${i} - Nombre: ${prod.nom}\nPrecio: ${prod.precio}\nStock: ${prod.stock}\n\n`;
     });
 
     return txt;
@@ -50,7 +67,7 @@ const menu = (opcion) => {
             break;
         
         case 2: //Comprar productos
-
+            Comprar();
             break;
 
         case 3: //Añadir al stock
@@ -65,15 +82,21 @@ const menu = (opcion) => {
     return true;
 };
 
-do {
-    opcion = parseInt(prompt(`Que desea hacer?
-    1 - Ver productos
-    2 - Comprar productos
-    3 - Añadir productos al stock
-    4 - Salir`));
+{
+    let opcion;
+    let termino;
+
+    console.log(p.length);
+    do {
+        opcion = parseInt(prompt(`Que desea hacer?
+        1 - Ver productos
+        2 - Comprar productos
+        3 - Añadir productos al stock
+        4 - Salir`));
+        
+        termino = opcion != 4 ? menu(opcion) : false;
     
-    termino = opcion != 4 ? menu(opcion) : false;
-
-} while (termino);
-
-alert("Adios");
+    } while (termino);
+    
+    alert("Adios");
+}
