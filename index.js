@@ -54,7 +54,7 @@ function Comprar(){
         }
 
         const tmp = parseInt(prompt("Desea añadir otro producto?\n1 - Si\n2 - No"));
-        termino = tmp === 1 ? true : false
+        termino = tmp === 1 ? true : false;
         
         if (termino){
             opcion = parseInt(prompt(`Que producto desea comprar?\n\n${consulta()}`)) - 1;
@@ -91,7 +91,9 @@ const menu = (opcion) => {
             break;
 
         case 3: //Añadir al stock
-
+            const op = parseInt(prompt(`Que producto añadir a stock?\n\n${consulta()}`)) - 1;
+            const cantidad = parseInt(prompt("Introduzca una cantidad: "));
+            p[op].addStock(cantidad);
             break;
 
         default:
