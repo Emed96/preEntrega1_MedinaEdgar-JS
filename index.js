@@ -18,31 +18,51 @@ class Producto{
 }
 
 let p = [
-    termo = new Producto("Termo", "Termo para bebidas frias o calientes", 195.00, 100),
-    vasoFiesta = new Producto("Vaso Fiesta", "Vaso con tapa de chupon para fiestas", 50.00, 100),
-    vasoCafetero = new Producto("Vaso Cafe", "Vaso para cafe", 120.00, 100),
-    cajaRegalo = new Producto("Caja Regalo", "Caja con tapa personalizada", 250.00, 150)
+    new Producto("Termo", "Termo para bebidas frias o calientes", 195.00, 100),
+    new Producto("Vaso Fiesta", "Vaso con tapa de chupon para fiestas", 50.00, 100),
+    new Producto("Vaso Cafe", "Vaso para cafe", 120.00, 100),
+    new Producto("Caja Regalo", "Caja con tapa personalizada", 250.00, 150)
 ];
 
 function Comprar(){
     let opcion;
     let cantidad;
     let monto = 0;
+    let termino = true;
 
     opcion = parseInt(prompt(`Que producto desea comprar?\n\n${consulta()}`)) - 1;
 
     do {    
-        if (opcion >= 0 && opcion < p.length){
+        if (opcion >= 0 && opcion < p.length && p[opcion].stock > 0){
             cantidad = parseInt(prompt("Introduzca una cantidad: "));
-            p[opcion].comprados(cantidad);
-            monto += (p[opcion].precio * cantidad);
+            if (cantidad <= p[opcion].stock){
+                p[opcion].comprados(cantidad);
+                monto += (p[opcion].precio * cantidad);
+            }
+            else{
+                alert(`Productos insuficiente!\nIntente nuevamente\nCantidade de ${p[opcion].nom} en stok: ${p[opcion].stock}`);
+                continue;
+            }
         }
-        else{
+        else if (p[opcion].stock <= 0){
+            alert("Producto agotado\nSera enviado al menu proncipal")
+            break;
+        }
+        else {
             opcion = parseInt(prompt(`Ingrese un producto existente\n\n${consulta()}`));
             continue;
         }
 
-    } while (0);
+        const tmp = parseInt(prompt("Desea añadir otro producto?\n1 - Si\n2 - No"));
+        termino = tmp === 1 ? true : false
+        
+        if (termino){
+            opcion = parseInt(prompt(`Que producto desea comprar?\n\n${consulta()}`)) - 1;
+        }
+
+    } while (termino);
+
+    alert(`Total a pagar: $${monto}`)
 }
 
 const consulta = () => {
